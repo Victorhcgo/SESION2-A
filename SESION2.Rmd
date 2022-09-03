@@ -12,15 +12,17 @@ library(ggplot2)
 library(kableExtra)
 ```
 
+
+##
 <center>
 <h1>RStudio desde cero hasta la creación de reportes y vinculación con Power BI.</h1>
 <h2>Sesion 2, día 1/2. Transformación de datos con dplyr</h2>
 </center>
 
 ```{r, fig.align='center', out.width= "253px", out.height= "200px"  }
-#
-#library(knitr)
-#include_graphics("C:\\Users\\Victor Hugo\\Pictures\\01.jpg")
+
+library(knitr)
+include_graphics("01.JPG")
 #choose.files()
 ```
 
@@ -29,48 +31,26 @@ library(kableExtra)
 </center>
 
 
-
-```{r, fig.align='center', out.width= "253px", out.height= "200px"  }
-#
-#library(knitr)
-#include_graphics("C:\\Users\\Victor Hugo\\Pictures\\01.jpg")
-#choose.files()
-```
-
-<center>
-
-<h3>Autor: Victor Hugo Caciedo Gómez<br> OneSoft. Tecnologías para el desarrollo.</h3>
-
-</center>
-
-## libreria dplyr que tiene dos separadores
-
-<center>
-
-<h1>libreria dplyr</h1>
-
-</center>
+## libreria dplyr
 
 `dplyr`provee fuciones que hacen fácil la manipulación de datos.
 
 #ingrestar la imagen de la libreria dplyr 
 #- explicar que es dplyr
 
-##
-<center>
-<h1>Funciones que componene a dplyr</h1><\br>
-</center>
-<h3>Categorias de las funciones de `dplyr`</h3><\br>
+## Funciones que componen a dplyr
+
+<h2>Categorias de las funciones de `dplyr`</h2>
 <h4>Filas</h4>
 
--   `Filter` => Elige los casos basado en sus nombres.
--   `Arrange` => Cambios el orden de las filas.
+-   `Filter`   => Elige los casos basado en sus nombres.
+-   `Arrange`  => Cambios el orden de las filas.
 
 <h4>Columnas</h4>
 
--   `Select` =\> Elige variables basada en sus nombres.
--   `Mutate` =\> Agrega nuevas variables que son función de variables.
--   `Rename` =\> Cambia el nombre de las colunmas.
+-   `Select`  =\> Elige variables basada en sus nombres.
+-   `Mutate`  =\> Agrega nuevas variables que son función de variables.
+-   `Rename`  =\> Cambia el nombre de las colunmas.
 
 <h4>Grupos de filas</h4>
 
@@ -78,17 +58,16 @@ library(kableExtra)
   
 ***
 \
+\
 `dplyr` brinda un operados para optimizar el códico al no tener que guardar objetos intermedios.
 
-<h3>El Pipe `%>%` </h3><\br>
+<h3>El Pipe `%>%` </h3>
 
   +  Pipe `%>%` =>  el resultado de un paso lo *transmite* a la siguiente línea.
 
 Con éstas funciones podremos hacer un analis de nuestra información de una menera más ágil y con menor esfuerzo de codificación y creación de variables para llegar a nuestro objetivo.
 
 ***
-\
-\
 \
 Primero instalamos el paquete `palmerpenguins` que trae un dataset de prueba sobre especies de pingüinos.
 
@@ -104,6 +83,14 @@ Usaremos el dataset llamado *penguins* y se le asigna el nombre *dfpenguins*
 dfpenguins <- penguins
 ```
 
+Guardamos el espacio de trabajo.
+
+```{r eval=TRUE, echo=TRUE, }
+save.image("dfpenguins.RData")   # Para guardar el workspace
+load("dfpenguins.RData")         # Para cargar el workspace
+```
+
+
 ***
 Las variables del dataset son:
 
@@ -118,11 +105,9 @@ Las variables del dataset son:
 |7|Sex|Sexo del pingüino|
 |8|Year|Año de estudio|
 
-***
-<center>
-<h1>Función SELECT de dplyr</h1>
-</center>
-\
+
+## 1.1 Función SELECT de dplyr 
+
 Ya cargado el dataset empecemos...
 ```{r echo=TRUE, eval=FALSE}
   select(dfpenguins, species, bill_length_mm, bill_depth_mm)
@@ -130,58 +115,214 @@ Ya cargado el dataset empecemos...
 
 Pero mejor es trabajar con los pipes `%>%`. 
 ```{r echo=TRUE, eval=FALSE}
-dfpenguins %>% select(species, bill_length_mm, bill_depth_mm)
+dfpenguins %>% select(species, bill_length_mm, bill_depth_mm) # dplyr
+dfpenguins[, c("species", "bill_length_mm", "bill_depth_mm")] # R Base
 ```
 
-```{r echo=FALSE}
+```{r tabla select_1, echo=FALSE}
 select_1 <- dfpenguins %>%
   select(species, bill_length_mm, bill_depth_mm)
-
-kable(select_1[1:5, ], format = "html", caption = "Resultado de la función SELECT", align = "c", booktabs = TRUE) %>%
+kable(select_1[1:2, ], format = "html", caption = "Resultado de la función SELECT", align = "c", booktabs = TRUE) %>%
   kable_classic_2(full_width = F)
 ```
 
 ***
-```{r echo=TRUE}
-d1 = head(iris)
-d2 = head(mtcars)
-#kable(d1)
-kable(d2[1:5,])
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>% select(species:bill_depth_mm) #selecciona un rango de columnas.
+```
+```{r tabla select_2, echo=FALSE}
+select_2 <- dfpenguins %>% select(species:bill_depth_mm)
+kable(select_2[1:2, ], format = "html", align = "c", booktabs = T) %>% 
+   kable_classic_2(full_width = F)
+```
+
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>% select(-(species:bill_depth_mm))
+```
+```{r tabla select_3, echo=FALSE}
+select_3 <- dfpenguins %>% select(-(species:bill_depth_mm))
+kable(select_3[1:2, ], format = "html", align = "c", booktabs = T) %>% 
+   kable_classic_2(full_width = F)
+```
+
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>% select(starts_with("b"))
+```
+```{r tabla select_4, echo=FALSE}
+select_4 <- dfpenguins %>% select((starts_with("b")))
+kable(select_4[1:2, ], format = "html", align = "c", booktabs = T) %>% 
+   kable_classic_2(full_width = F)
 ```
 
 ***
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>% select(ends_with("m"))
+```
+```{r tabla select_5, echo=FALSE}
+select_5 <- dfpenguins %>% select(ends_with("m"))
+kable(select_5[1:2, ], format = "html", align = "c", booktabs = T) %>% 
+   kable_classic_2(full_width = F)
+```
 
+```{r echo=TRUE, eval=FALSE}
+  dfpenguins %>% select(contains("p"))
+```
+```{r tabla select_6, echo=FALSE}
+select_6 <- dfpenguins %>% select(contains("p"))
+kable(select_6[1:2, ], format = "html", align = "c", booktabs = T) %>% 
+   kable_classic_2(full_width = F)
+```
+
+```{r echo=TRUE, eval=FALSE}
+  dfpenguins %>% select(matches("_"))
+```
+```{r tabla select_7, echo=FALSE}
+select_7 <- dfpenguins %>% select(matches("_"))
+kable(select_7[1:2, ], format = "html", align = "c", booktabs = T) %>% 
+   kable_classic_2(full_width = F)
+```
+
+
+## 1.2 Función MUTATE de dplyr
+  => `Mutate` agrega una columna nueva al final del dataset.
+  
+```{r echo=TRUE, eval=FALSE}
+mutate(dfpenguins, column_new = "New")
+```
+  
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>% mutate(column_new = "New")
+```
+
+```{r echo= TRUE, eval=FALSE}
+dfpenguins %>% mutate(tipos_picos = case_when(
+  bill_length_mm < 35 ~ "Bajo",
+  bill_length_mm >= 35 & bill_length_mm < 40 ~ "Medio",
+  TRUE ~ "Alto") )
+```
+
+```{r TABLA mutate, echo=FALSE}
+mt_1 <- dfpenguins %>% mutate(tipos_picos = case_when(
+  bill_length_mm < 35 ~ "Bajo",
+  bill_length_mm >= 35 & bill_length_mm < 40 ~ "Medio",
+  TRUE ~ "Alto"
+) )
+kbl(mt_1[1:4, 5:9], format = "html", aling = "c") %>%kable_classic_2(full_width=F)
+```
+
+## 1.3 Función RENAME y TRANSFORM
+\
+
+*=>* `Rename` cambia el nombre de las columnas.
+
+```{r echo= TRUE, eval=FALSE}
+rename (dfpenguins, especie = species, long_pico_mm = bill_length_mm)
+```
+
+```{r echo= TRUE, eval=FALSE}
+dfpenguins %>% rename(especie = species, genero = sex)
+```
+```{r rename_1, echo=FALSE}
+rename_1 <- dfpenguins %>% rename(especie = species, genero = sex)
+kbl(rename_1[1:2,], format = "html", aling = "c", )%>% 
+   kable_classic_2(full_width = F)
 ```
 
 ***
-```{r}
+*=>* `Transform` cambia el nombre de los datos dentro de la columna.
 
+```{r echo= TRUE, eval=FALSE}
+dfpenguins %>% transform (bill_length_mm= ifelse(bill_length_mm> 40,
+                                          "Pico largo", "Pico corto"))
+```
+
+```{r echo= TRUE, eval=FALSE}
+dfpenguins %>% transform (bill_length_mm = case_when(
+  bill_length_mm < 35 ~ "Bajo",
+  bill_length_mm >= 35 & bill_length_mm < 40 ~ "Medio",
+  TRUE ~ "Alto"
+) )
+```
+```{r TABLA transform, echo=FALSE}
+tf_1 <- dfpenguins %>% transform (bill_length_mm = case_when(
+  bill_length_mm < 35 ~ "Bajo",
+  bill_length_mm >= 35 & bill_length_mm < 40 ~ "Medio",
+  TRUE ~ "Alto"
+) )
+kbl(tf_1[1:4,], format = "html", aling = "c", caption = "Función TRANSFORM de dplyr") %>% kable_classic_2(full_width=F)
+  
 ```
 
 
+## 2.1 Función FILTER de dplyr
+
+```{r animation.hook='gifski', echo=TRUE, eval=FALSE}
+filter(dfpenguins, sex == "male", island == "Torgersen",
+       flipper_length_mm <= 190)
+```
+
+Pero mejor es trabajar con los pipes `%>%`. 
+
+```{r animation.hook='gifski', echo=TRUE, eval=FALSE}
+dfpenguins %>% filter(sex== "male", flipper_length_mm <= 190) # dplry
+
+dfpenguins[dfpenguins$sex == "male" & 
+             dfpenguins$island == "Torgersen",] # R Base
+```
+
+```{r tabla filter, echo=FALSE}
+filter_1 <- dfpenguins %>%
+  filter(sex== "male", flipper_length_mm <= 190)
+kable(filter_1[1:4, 1:8], "html", aling = "c", caption = "Resultado de la función FILTER", booktabs = TRUE) %>% 
+  kable_classic_2(full_width=F)
+```
+
+***
+<h3>Operadores lógicos</h3>
+
+<center>*x*</center>
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>%  filter(species == "Adelie")
+```
+
+<center>*x | y* </center>
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>%  filter(species == "Adelie" | species == "Chinstrap")
+dfpenguins %>%  filter(species %in% c("Adelie","Chinstrap"))
+```
+
+<center>*x & !y* </center>
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>%  filter(species == "Adelie" & !(species == "Chinstrap"))
+```
+
+<center>*x & y* </center>
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>%  filter(species == "Adelie" & body_mass_g > 4600)
+```
+
+<center>*grepl*</center>
+```{r echo=TRUE, eval=FALSE}
+#Busca en la colunma un patron.
+dfpenguins %>%  filter(grepl(pattern = "co", island))
+```
+
+
+## 3 Función Summarise y Group_by
+
+  + => `Summarise` 
+```{r echo=TRUE, eval=FALSE}
+summarise(dfpenguins, mean_body_mass = mean (body_mass_g, na.rm = TRUE) )
+```
+```{r echo=FALSE}
+S_1 <- summarise(dfpenguins, mean_body_mass = mean (body_mass_g, na.rm = TRUE) )
+kbl(S_1, aling = "c")%>% kable_classic_2(full_width=F)
+```
+
+  + => `Group_by`
+  
 ------------------------------------------------------------------------
-
-<center>
-
-<h1>Función FILTER de dplyr</h1>
-
-</center>
-
-------------------------------------------------------------------------
-
-<center>
-
-<h1>Función MUTATE de dplyr</h1>
-
-</center>
-
-------------------------------------------------------------------------
-
-<center>
-
-<h1>Los pipes con dplyr</h1>
-
-</center>
+<center><h1>Los pipes con dplyr</h1></center>
 
 los pipes `%>%` permite agilizar las líneas de código y optimizar tiempo.
 
@@ -195,7 +336,7 @@ Ejemplo:
 
 <center>
 
-<h1>Elegir las variables por sus valores</h1>
+#<h1>Elegir las variables por sus valores</h1>
 
 </center>
 
