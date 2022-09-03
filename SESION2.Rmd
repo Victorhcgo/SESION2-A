@@ -1,0 +1,216 @@
+---
+output: 
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(rmarkdown)
+library(ggplot2)
+library(kableExtra)
+```
+
+<center>
+<h1>RStudio desde cero hasta la creación de reportes y vinculación con Power BI.</h1>
+<h2>Sesion 2, día 1/2. Transformación de datos con dplyr</h2>
+</center>
+
+```{r, fig.align='center', out.width= "253px", out.height= "200px"  }
+#
+#library(knitr)
+#include_graphics("C:\\Users\\Victor Hugo\\Pictures\\01.jpg")
+#choose.files()
+```
+
+<center>
+<h3>Autor: Victor Hugo Caciedo Gómez<br> OneSoft. Tecnologías para el desarrollo.</h3>
+</center>
+
+
+
+```{r, fig.align='center', out.width= "253px", out.height= "200px"  }
+#
+#library(knitr)
+#include_graphics("C:\\Users\\Victor Hugo\\Pictures\\01.jpg")
+#choose.files()
+```
+
+<center>
+
+<h3>Autor: Victor Hugo Caciedo Gómez<br> OneSoft. Tecnologías para el desarrollo.</h3>
+
+</center>
+
+## libreria dplyr que tiene dos separadores
+
+<center>
+
+<h1>libreria dplyr</h1>
+
+</center>
+
+`dplyr`provee fuciones que hacen fácil la manipulación de datos.
+
+#ingrestar la imagen de la libreria dplyr 
+#- explicar que es dplyr
+
+##
+<center>
+<h1>Funciones que componene a dplyr</h1><\br>
+</center>
+<h3>Categorias de las funciones de `dplyr`</h3><\br>
+<h4>Filas</h4>
+
+-   `Filter` => Elige los casos basado en sus nombres.
+-   `Arrange` => Cambios el orden de las filas.
+
+<h4>Columnas</h4>
+
+-   `Select` =\> Elige variables basada en sus nombres.
+-   `Mutate` =\> Agrega nuevas variables que son función de variables.
+-   `Rename` =\> Cambia el nombre de las colunmas.
+
+<h4>Grupos de filas</h4>
+
+  + `Summarise`    => Reduce múltiples valores en una sola fila.
+  
+***
+\
+`dplyr` brinda un operados para optimizar el códico al no tener que guardar objetos intermedios.
+
+<h3>El Pipe `%>%` </h3><\br>
+
+  +  Pipe `%>%` =>  el resultado de un paso lo *transmite* a la siguiente línea.
+
+Con éstas funciones podremos hacer un analis de nuestra información de una menera más ágil y con menor esfuerzo de codificación y creación de variables para llegar a nuestro objetivo.
+
+***
+\
+\
+\
+Primero instalamos el paquete `palmerpenguins` que trae un dataset de prueba sobre especies de pingüinos.
+
+```{r eval=TRUE, echo=TRUE}
+#install.packages("palmerpenguins")
+library(dplyr)
+library(palmerpenguins)
+```
+
+Usaremos el dataset llamado *penguins* y se le asigna el nombre *dfpenguins*
+
+```{r echo=TRUE}
+dfpenguins <- penguins
+```
+
+***
+Las variables del dataset son:
+
+|N°|Variable|Descripción|
+|--|:-------|:----------|
+|1|Species|Especie|
+|2|Island|Isla|
+|3|Bill_length_mm|Longitud del pico|
+|4|Bill_depth_mm|Propundidad del pico|
+|5|Flipper_length_mm|Longitud de la aleta|
+|6|Body_mass_g|Masa corporal|
+|7|Sex|Sexo del pingüino|
+|8|Year|Año de estudio|
+
+***
+<center>
+<h1>Función SELECT de dplyr</h1>
+</center>
+\
+Ya cargado el dataset empecemos...
+```{r echo=TRUE, eval=FALSE}
+  select(dfpenguins, species, bill_length_mm, bill_depth_mm)
+```
+
+Pero mejor es trabajar con los pipes `%>%`. 
+```{r echo=TRUE, eval=FALSE}
+dfpenguins %>% select(species, bill_length_mm, bill_depth_mm)
+```
+
+```{r echo=FALSE}
+select_1 <- dfpenguins %>%
+  select(species, bill_length_mm, bill_depth_mm)
+
+kable(select_1[1:5, ], format = "html", caption = "Resultado de la función SELECT", align = "c", booktabs = TRUE) %>%
+  kable_classic_2(full_width = F)
+```
+
+***
+```{r echo=TRUE}
+d1 = head(iris)
+d2 = head(mtcars)
+#kable(d1)
+kable(d2[1:5,])
+```
+
+***
+
+```
+
+***
+```{r}
+
+```
+
+
+------------------------------------------------------------------------
+
+<center>
+
+<h1>Función FILTER de dplyr</h1>
+
+</center>
+
+------------------------------------------------------------------------
+
+<center>
+
+<h1>Función MUTATE de dplyr</h1>
+
+</center>
+
+------------------------------------------------------------------------
+
+<center>
+
+<h1>Los pipes con dplyr</h1>
+
+</center>
+
+los pipes `%>%` permite agilizar las líneas de código y optimizar tiempo.
+
+Ejemplo:
+
+```{r Ejemplo de pipes}
+
+```
+
+## Elegir las variables por sus valores
+
+<center>
+
+<h1>Elegir las variables por sus valores</h1>
+
+</center>
+
+## reodenar las filas
+
+<center>
+
+<h1>reodenar las filas</h1>
+
+</center>
+
+## Escoge las vaiables por su nombre
+
+<center>
+
+<h1>Escoge las vaiables por su nombre</h1>
+
+</center>
